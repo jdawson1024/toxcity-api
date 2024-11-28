@@ -1,21 +1,29 @@
 # Toxicity Analysis API
 
-A high-performance API for text toxicity analysis using the Detoxify model. This API provides real-time toxicity analysis for text content with support for batch processing.
+A high-performance API for text toxicity analysis using the [Detoxify](https://github.com/unitaryai/detoxify) model. This API provides real-time toxicity analysis for text content, supporting batch processing and monitoring capabilities.
 
 ## Features
 
 - High-performance text toxicity analysis
 - Batch processing support
+- Prometheus metrics for monitoring
 - Docker containerization
-- Prometheus metrics
+- Simple web interface for testing
 - Structured logging
-- Request tracking and monitoring
+- Request tracking
+
+## Live Demo Interface
+
+The API includes a built-in web interface for testing. When running locally, visit:
+- Web Interface: http://localhost:8000
+- API Documentation: http://localhost:8000/docs
+- Metrics: http://localhost:8000/metrics
 
 ## Quick Start
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/toxicity-api.git
+git clone https://github.com/jdawson1024/toxcity-api.git
 cd toxicity-api
 ```
 
@@ -79,12 +87,6 @@ Example response:
 }
 ```
 
-## API Documentation
-
-Once running, visit:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
 ## Configuration
 
 Key environment variables:
@@ -101,15 +103,13 @@ The API returns standard HTTP status codes:
 - 400: Invalid request
 - 500: Server error
 
-Each error response includes a detail message explaining the issue.
-
 ## Performance Considerations
 
 - Use batch processing for multiple texts
 - Keep batch sizes reasonable (recommended: 32-128)
 - Monitor processing times in responses
 
-## Security
+## Security Recommendations
 
 To secure this API in production, consider:
 - Adding authentication (API keys, JWT, etc.)
@@ -124,6 +124,16 @@ The API exposes Prometheus metrics at `/metrics` including:
 - Text processing statistics
 - System metrics
 
+## Potential Enhancements
+
+- Custom authentication systems
+- Advanced rate limiting
+- Real-time websocket support
+- Custom ML model integration
+- Analytics dashboard
+- Database integration for result storage
+- Caching layer for frequent requests
+
 ## License
 
 MIT License
@@ -135,3 +145,7 @@ MIT License
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
+
+## Credits
+
+This project uses the [Detoxify](https://github.com/unitaryai/detoxify) model for toxicity analysis. Special thanks to the Unitary AI team for their work on text toxicity detection.
