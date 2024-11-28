@@ -1,0 +1,31 @@
+services:
+  api:
+    build: .
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      - DEBUG=${DEBUG:-False}
+      - HOST=${HOST:-0.0.0.0}
+      - PORT=${PORT:-8000}
+      - WORKERS=${WORKERS:-4}
+      - BATCH_SIZE=${BATCH_SIZE:-32}
+      - MAX_WORKERS=${MAX_WORKERS:-8}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - ALLOW_ORIGINS=${ALLOW_ORIGINS:-["*"]}
+    volumes:
+      - ./app:/app/app
+      - ./.env:/app/.env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - api
