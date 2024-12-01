@@ -11,7 +11,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: jdawson1024/toxcity-api
 
 jobs:
   build:
@@ -78,16 +78,15 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
     permissions:
-      packages: write  # Add this permission for package deletion
-      contents: read
+      packages: write
     
     steps:
       - name: Delete old container images
         uses: actions/delete-package-versions@v4
         with:
-          package-name: ${{ github.event.repository.name }}
-          package-type: 'container'
+          package-name: toxcity-api
+          owner: jdawson1024
+          package-type: container
           min-versions-to-keep: 5
           delete-only-untagged-versions: true
-          num-old-versions-to-delete: 10  # Add this to control deletion batch size
-          token: ${{ secrets.GITHUB_TOKEN }}  # Explicitly specify the token
+          token: ${{ secrets.GITHUB_TOKEN }}
