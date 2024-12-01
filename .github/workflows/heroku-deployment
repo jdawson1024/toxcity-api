@@ -1,0 +1,51 @@
+name: Deploy to Heroku
+
+on:
+  workflow_run:
+    workflows: ["Docker"]
+    types:
+      - completed
+
+env:
+  HEROKU_APP_NAME: toxcity-api 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to Heroku
+        uses: docker/login-action@v3
+        with:
+          registry: registry.heroku.com
+          username: ${{ secrets.HEROKU_EMAIL }}
+          password: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Pull latest image from GHCR
+        run: |
+          docker pull ghcr.io/jdawson1024/toxcity-api:latest
+
+      - name: Tag for Heroku
+        run: |
+          docker tag ghcr.io/jdawson1024/toxcity-api:latest registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
+
+      - name: Push to Heroku
+        run: |
+          docker push registry.heroku.com/${{ env.HEROKU_APP_NAME }}/web
+
+      - name: Release to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          heroku container:release web -a ${{ env.HEROKU_APP_NAME }}
