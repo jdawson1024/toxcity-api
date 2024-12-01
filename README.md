@@ -38,13 +38,7 @@ source venv/bin/activate  # On Windows use: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your settings
-```
-
-5. Run the API:
+4. Run the API:
 ```bash
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 ```
