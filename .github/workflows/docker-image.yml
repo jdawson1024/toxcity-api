@@ -23,14 +23,14 @@ jobs:
 
     - name: Build and tag the Docker image
       run: |
-        IMAGE_NAME=ghcr.io/${{ github.repository }}/toxcity-api
+        IMAGE_NAME=ghcr.io/jdawson1024/toxcity-api
         VERSION=$(date +%Y%m%d%H%M%S)
         # Build and tag the image with both VERSION and latest
         docker build . --file Dockerfile --tag $IMAGE_NAME:$VERSION --tag $IMAGE_NAME:latest
 
     - name: Push the Docker image
       run: |
-        IMAGE_NAME=ghcr.io/${{ github.repository }}/toxcity-api
+        IMAGE_NAME=ghcr.io/jdawson1024/toxcity-api
         VERSION=$(date +%Y%m%d%H%M%S)
         # Push both VERSION and latest tags
         docker push $IMAGE_NAME:$VERSION
